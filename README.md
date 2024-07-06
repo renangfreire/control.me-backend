@@ -1,8 +1,29 @@
-# App
+# Control.me - BackEnd
 
-personal finances style app
+<p align="center">
+  <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+</p>
 
-## RFs (Requisitos funcionais)
+<br>
+
+## 🚀 Tecnologias
+
+Esse projeto está sendo desenvolvido com as seguintes tecnologias:
+
+- Typescript
+- Node.js
+- Fastify
+- Zod
+- Vitest
+- PostgreSQL
+- Prisma
+
+## 💻 Projeto
+
+O Control.me é um projeto que tem como finalidade ser um controle de financias pessoais para usuário. Segue abaixo os Requesitos que a aplicação deve cumprir.
+
+### RFs (Requisitos funcionais)
 
 - [] Deve ser possível se cadastrar;
 - [] Deve ser possível se autenticar;
@@ -17,19 +38,26 @@ personal finances style app
 - [] Deve ser possível visualizar as metricas -> Valor total gasto, Valor total recebido, separado por categórias: Graphs
 
 EXTRAS after MVP:
-Visões de investimentos
-Visualização de Contas pagas/não pagas
-Relatórios
-Metas
+- Visões de investimentos
+- Visualização de Contas pagas/não pagas -> Com base em quando seu cartão vira
+- Relatórios
+- Metas
 
-## RNs (Regras de negócio)
+### RNs (Regras de negócio)
 
-- [] O usuário não deve poder se cadastrar com um e-mail e/ou cpf duplicado
+- [] O usuário não deve poder se cadastrar com um e-mail duplicado
 - [] O usuário só pode ver suas movimentações/categorias/metricas
 
-## RNFs (Requisitos não-funcionais)
+### RNFs (Requisitos não-funcionais)
 
 - [] A senha do usuário precisa ser criptografada;
 - [] Os dados da aplicação	precisam ser persistidos no PostgreSQL
 - [] Todas as listas de dados precisam estar paginadas com 20 itens por pag;
 - [] O usuário deve ser identificado por um JWT;
+
+###  Entity Relationship Diagram
+Diagrama é atualizado conforme o schema do Prisma é atualizado!
+
+![ERD Image]
+
+[ERD Image]: prisma/ERD.svg

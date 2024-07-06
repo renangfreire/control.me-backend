@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  theme    = "dark"
+}
+
+enum TrasactionType {
+  EXPENSE
+  REVENUE
+}
+
+enum Months {
+  JANUARY
+  FEBRUARY
+  MARCH
+  APRIL
+  MAY
+  JUNE
+  JULY
+  AUGUST
+  SEPTEMBER
+  OCTOBER
+  NOVEMBER
+  DECEMBER
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String  @id @default(uuid())
+  email         String  @unique
+  password_hash String
+  name          String?
+
+  categories    Category[]
+  transactions  Transaction[]
+  type_payments formPayment[]
+
+  @@map("users")
+}
+
+model Transaction {
+  id               String         @id @default(uuid())
+  transaction_type TrasactionType
+  value            Decimal
+  created_at       DateTime       @default(now())
+  transaction_at   DateTime
+  monthTransaction Months
+
+  formPayment    formPayment? @relation(fields: [formPayment_id], references: [id])
+  formPayment_id String?
+
+  User    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  Category    Category @relation(fields: [category_id], references: [id])
+  category_id String
+
+  @@map("transactions")
+}
+
+model Category {
+  id               String         @id @default(uuid())
+  name             String
+  transaction_type TrasactionType
+
+  transactions Transaction[]
+
+  created_at DateTime @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  @@map("categories")
+}
+
+model formPayment {
+  id          String @id @default(uuid())
+  name        String
+  invoice_day Int?
+  due_day     Int?
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  trasactions Transaction[]
+
+  @@map("forms_payment")
+}
