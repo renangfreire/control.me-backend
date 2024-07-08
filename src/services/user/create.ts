@@ -9,7 +9,7 @@ interface createUserRequestSchema {
     password: string,
     name?: string | null
 }
-export class CreateUserServices{
+export class CreateUserService{
     constructor(
         private userRepository: UsersRepository
     ){}

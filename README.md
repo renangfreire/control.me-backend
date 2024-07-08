@@ -25,8 +25,8 @@ O Control.me é um projeto que tem como finalidade ser um controle de financias 
 
 ### RFs (Requisitos funcionais)
 
-- [] Deve ser possível se cadastrar;
-- [] Deve ser possível se autenticar;
+- [X] Deve ser possível se cadastrar;
+- [X] Deve ser possível se autenticar;
 - [] Deve ser possível realizar um CRUD em uma Entrada/Saída de dinheiro
 - [] Deve ser possível realizar um CRUD em uma compra parcelada que será adicionada fracionada
 - [] Deve ser possível realizar um CRUD em categorias de compra (saídas)
