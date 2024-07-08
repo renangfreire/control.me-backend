@@ -1,12 +1,9 @@
 
-import { InvalidInput } from "@/main/errors/InvalidInput";
-import { UserAlreadyExists } from "@/main/errors/UserAlreadyExists";
-import { FormPaymentRepository } from "@/repositories/@types/form-payment-repository";
-import { UsersRepository } from "@/repositories/@types/user-repository";
+import { FormPaymentRepository } from "@/core/repositories/form-payment-repository";
+import { UsersRepository } from "@/core/repositories/user-repository";
 import { InMemoryFormPaymentRepository } from "@/repositories/in-memory/in-memory-forms-payment";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { FormPaymentService } from "@/services/formPayment/create";
-import { CreateUserService } from "@/services/user/create";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 

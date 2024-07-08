@@ -1,4 +1,4 @@
-import { UsersRepository } from "@/repositories/@types/user-repository";
+import { UsersRepository } from "@/core/repositories/user-repository";
 import { badRequest, conflict } from "@/main/helpers";
 import { UserAlreadyExists } from "@/main/errors/UserAlreadyExists";
 import { hash } from "bcrypt";

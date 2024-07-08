@@ -1,7 +1,7 @@
 
 import { InvalidInput } from "@/main/errors/InvalidInput";
 import { UserAlreadyExists } from "@/main/errors/UserAlreadyExists";
-import { UsersRepository } from "@/repositories/@types/user-repository";
+import { UsersRepository } from "@/core/repositories/user-repository";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { CreateUserService } from "@/services/user/create";
 import { beforeEach, describe, expect, it } from "vitest";

@@ -1,8 +1,6 @@
 
 import { InvalidCredentials } from "@/main/errors/InvalidCredentials";
-import { InvalidInput } from "@/main/errors/InvalidInput";
-import { UserAlreadyExists } from "@/main/errors/UserAlreadyExists";
-import { UsersRepository } from "@/repositories/@types/user-repository";
+import { UsersRepository } from "@/core/repositories/user-repository";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { AuthenticateUserService } from "@/services/user/authenticate";
 import { hash } from "bcrypt";

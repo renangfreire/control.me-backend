@@ -1,5 +1,5 @@
-import { UsersRepository } from "@/repositories/@types/user-repository";
-import { createTransactionRequestSchema } from "./@types/transactions";
+import { UsersRepository } from "@/core/repositories/user-repository";
+import { createTransactionRequestSchema } from "../../core/services/transactions/transactions";
 
 export class CreateUserService{
     constructor(

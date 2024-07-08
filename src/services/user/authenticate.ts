@@ -1,4 +1,4 @@
-import { UsersRepository } from "@/repositories/@types/user-repository";
+import { UsersRepository } from "@/core/repositories/user-repository";
 import { badRequest } from "@/main/helpers";
 import { compare } from "bcrypt";
 import { InvalidCredentials } from "@/main/errors/InvalidCredentials";

@@ -1,7 +1,7 @@
 import { badRequest } from "@/main/helpers";
 import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound";
-import { FormPaymentRepository } from "@/repositories/@types/form-payment-repository";
-import { UsersRepository } from "@/repositories/@types/user-repository";
+import { FormPaymentRepository } from "@/core/repositories/form-payment-repository";
+import { UsersRepository } from "@/core/repositories/user-repository";
 
 interface createFormPaymentRequestSchema {
     name: string,

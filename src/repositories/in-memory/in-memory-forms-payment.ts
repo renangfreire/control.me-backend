@@ -1,6 +1,6 @@
 import { Prisma, formPayment } from "@prisma/client";
 import { randomUUID } from "crypto";
-import { FormPaymentRepository } from "../@types/form-payment-repository";
+import { FormPaymentRepository } from "../../core/repositories/form-payment-repository";
 
 interface inMemoryDatabase {
     FormsPayment: formPayment[]
