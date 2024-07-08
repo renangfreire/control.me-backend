@@ -51,6 +51,7 @@ EXTRAS after MVP:
 ### RNFs (Requisitos não-funcionais)
 
 - [] A senha do usuário precisa ser criptografada;
+- [] A senha do usuário deverá ter um tamanho mínimo de 7 caracteres;
 - [] Os dados da aplicação	precisam ser persistidos no PostgreSQL
 - [] Todas as listas de dados precisam estar paginadas com 20 itens por pag;
 - [] O usuário deve ser identificado por um JWT;

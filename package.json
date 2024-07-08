@@ -8,7 +8,7 @@
     "test:watch": "vitest test/services"
   },
   "keywords": [],
-  "author": "",
+  "a    QWSA1  0guthor": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.16.1",
