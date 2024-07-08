@@ -4,7 +4,7 @@ import { compare } from "bcrypt";
 import { InvalidCredentials } from "@/main/errors/InvalidCredentials";
 import fastifyJwt from "@fastify/jwt";
 
-interface createUserRequestSchema {
+interface authenticateUserRequestSchema {
     email: string,
     password: string,
 }
@@ -14,7 +14,7 @@ export class AuthenticateUserService{
         private userRepository: UsersRepository
     ){}
 
-    async handle({email, password}: createUserRequestSchema){
+    async handle({email, password}: authenticateUserRequestSchema){
         const existentUser = await this.userRepository.findByEmail(email)
 
         if(!existentUser){

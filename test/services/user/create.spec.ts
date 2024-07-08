@@ -2,7 +2,7 @@
 import { InvalidInput } from "@/main/errors/InvalidInput";
 import { UserAlreadyExists } from "@/main/errors/UserAlreadyExists";
 import { UsersRepository } from "@/repositories/@types/user-repository";
-import { inMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
+import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { CreateUserService } from "@/services/user/create";
 import { beforeEach, describe, expect, it } from "vitest";
 
@@ -11,7 +11,7 @@ let userRepository: UsersRepository
 
 describe("Create (unit)", async () => {
     beforeEach(async () => {
-        userRepository = new inMemoryUserRepository()
+        userRepository = new InMemoryUserRepository()
         userServices = new CreateUserService(userRepository)
     })
 

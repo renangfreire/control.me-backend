@@ -3,7 +3,7 @@ import { InvalidCredentials } from "@/main/errors/InvalidCredentials";
 import { InvalidInput } from "@/main/errors/InvalidInput";
 import { UserAlreadyExists } from "@/main/errors/UserAlreadyExists";
 import { UsersRepository } from "@/repositories/@types/user-repository";
-import { inMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
+import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { AuthenticateUserService } from "@/services/user/authenticate";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -13,7 +13,7 @@ let userRepository: UsersRepository
 
 describe("Authenticate (unit)", async () => {
     beforeEach(async () => {
-        userRepository = new inMemoryUserRepository()
+        userRepository = new InMemoryUserRepository()
         authenticateUserService = new AuthenticateUserService(userRepository)
     })
 

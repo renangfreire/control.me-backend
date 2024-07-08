@@ -6,7 +6,7 @@ interface inMemoryDatabase {
     Users: User[]
 }
 
-export class inMemoryUserRepository implements UsersRepository{
+export class InMemoryUserRepository implements UsersRepository{
     #db: inMemoryDatabase = {
         Users: []
     }
@@ -25,6 +25,12 @@ export class inMemoryUserRepository implements UsersRepository{
 
     async findByEmail(email: string) {
        const user = this.#db.Users.find((user) => user.email === email)
+
+       return user || null
+    }
+
+    async findById(userId: string){
+        const user = this.#db.Users.find((user) => user.id === userId)
 
        return user || null
     }
