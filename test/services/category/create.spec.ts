@@ -4,19 +4,19 @@ import { UsersRepository } from "@/core/repositories/user-repository";
 import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound";
 import { InMemoryCategoryRepository } from "@/repositories/in-memory/in-memory-category";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
-import { CategoryService } from "@/services/category/create";
+import { CreateCategoryService } from "@/services/category/create";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 
 let userRepository: UsersRepository
 let categoryRepository: CategoryRepository
-let categoryService: CategoryService
+let categoryService: CreateCategoryService
 
 describe("Create (unit)", async () => {
     beforeEach(async () => {
         userRepository = new InMemoryUserRepository()
         categoryRepository = new InMemoryCategoryRepository()
-        categoryService = new CategoryService(userRepository, categoryRepository)
+        categoryService = new CreateCategoryService(userRepository, categoryRepository)
     })
 
     it("should be able create transaction category", async () => {

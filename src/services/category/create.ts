@@ -10,7 +10,7 @@ interface createCategoryRequestSchema {
     user_id: string
 }
 
-export class CategoryService{
+export class CreateCategoryService{
     constructor(
         private userRepository: UsersRepository,
         private categoryRepository: CategoryRepository
