@@ -32,7 +32,7 @@ O Control.me é um projeto que tem como finalidade ser um controle de financias 
 - [] Deve ser possível realizar um CRUD em uma compra parcelada que será adicionada fracionada
 - [X] Deve ser possível realizar um CRUD em categorias de compra (saídas)
 - [X] Deve ser possível realizar um CRUD em categorias de recebimento de money (entradas)
-- [] Deve ser possível realizar um CRUD em formas de pagamento diferente e que será vinculada a saída
+- [X] Deve ser possível realizar um CRUD em formas de pagamento diferente e que será vinculada a saída
 - [] Deve ser possível realizar um CRUD em despesas fixas que serão adicionadas aos proximos meses automaticamente
 - [] Deve ser possível visualizar as compras do mês
 - [] Deve ser possível visualizar quando as movimentações foram feitas
