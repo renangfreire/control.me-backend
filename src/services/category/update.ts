@@ -33,10 +33,8 @@ export class UpdateCategoryService{
 
         const category = await this.categoryRepository.update({
             ...existentCategory,
-            id,
             name: name || existentCategory.name,
             transaction_type: transaction_type || existentCategory.transaction_type,
-            user_id
         })
 
         return {

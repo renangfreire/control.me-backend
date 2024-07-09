@@ -24,4 +24,18 @@ export class InMemoryFormPaymentRepository implements FormPaymentRepository{
         return formPaymentData
     }
 
+    async findById(formPayment_id: string): Promise<formPayment | null> {
+        const formPayment =  this.#db.FormsPayment.find(value => value.id === formPayment_id)
+        return formPayment || null
+    }
+
+    async update(data: formPayment): Promise<formPayment> {
+        const formPaymentIndex = this.#db.FormsPayment.findIndex((formPayment) => formPayment.id === data.id)
+
+        if(formPaymentIndex > 0) {
+            this.#db.FormsPayment[formPaymentIndex] = data
+        }
+
+        return data
+    }
 }

@@ -19,7 +19,7 @@ describe("Delete (unit)", async () => {
         deleteCategoryService = new DeleteCategoryService(userRepository, categoryRepository)
     })
 
-    it("should be able to delete category", async () => {
+    it("should be able to update form payment", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",

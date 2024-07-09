@@ -1,61 +1,62 @@
 
-import { CategoryRepository } from "@/core/repositories/category-repository";
+import { FormPaymentRepository } from "@/core/repositories/form-payment-repository";
 import { UsersRepository } from "@/core/repositories/user-repository";
 import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound";
-import { InMemoryCategoryRepository } from "@/repositories/in-memory/in-memory-category";
+import { InMemoryFormPaymentRepository } from "@/repositories/in-memory/in-memory-forms-payment";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
-import { DeleteCategoryService } from "@/services/category/delete";
+import { UpdateFormPaymentService } from "@/services/formPayment/update";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 
 let userRepository: UsersRepository
-let categoryRepository: CategoryRepository
-let deleteCategoryService: DeleteCategoryService
+let formPaymentRepository: FormPaymentRepository
+let updateFormPaymentService: UpdateFormPaymentService
 
-describe("Delete (unit)", async () => {
+describe("Update (unit)", async () => {
     beforeEach(async () => {
         userRepository = new InMemoryUserRepository()
-        categoryRepository = new InMemoryCategoryRepository()
-        deleteCategoryService = new DeleteCategoryService(userRepository, categoryRepository)
+        formPaymentRepository = new InMemoryFormPaymentRepository()
+        updateFormPaymentService = new UpdateFormPaymentService(userRepository, formPaymentRepository)
     })
 
-    it("should be able to delete category", async () => {
+    it("should be able update form payment", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
             password_hash: await hash("1234567", 7),
         })
 
-        const createdCategory = await categoryRepository.create({
-            name: "Investimento",
-            transaction_type: "EXPENSE",
+        const createdFormPayment = await formPaymentRepository.create({
+            name: "Conta corrente",
             user_id: user.id
         })
 
-        const { category } = await deleteCategoryService.handle({
-            category_id: createdCategory.id,
+        const { formPayment } = await updateFormPaymentService.handle({
+            id: createdFormPayment.id,
+            name: "Cartão de crédito",
             user_id: user.id
         })
 
-        expect(category.id).toEqual(createdCategory.id)
+        expect(formPayment.id).toEqual(expect.any(String))
+        expect(formPayment.name).toEqual("Cartão de crédito")
     })
 
-    it("should not able delete category with wrong user", async () => {
+    it("should not able update form payment with wrong user", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
             password_hash: await hash("1234567", 7),
         })
 
-        const createdCategory = await categoryRepository.create({
-            name: "Investimento",
-            transaction_type: "EXPENSE",
+        const createdFormPayment = await formPaymentRepository.create({
+            name: "Conta corrente",
             user_id: user.id
         })
 
         expect(async () => {
-            await deleteCategoryService.handle({
-                category_id: createdCategory.id,
+            await updateFormPaymentService.handle({
+                id: createdFormPayment.id,
+                name: "Cartão de crédito",
                 user_id: "Wrong Id"
             })
         }).rejects.toEqual(expect.objectContaining({
@@ -64,7 +65,7 @@ describe("Delete (unit)", async () => {
         }))
     })
 
-    it("should not able delete transaction category with wrong category id", async () => {
+    it("should not able update form payment with wrong form_payment id", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
@@ -72,8 +73,9 @@ describe("Delete (unit)", async () => {
         })
 
         expect(async () => {
-            await deleteCategoryService.handle({
-                category_id: "Wrong Id",
+            await updateFormPaymentService.handle({
+                name: "Conta corrente",
+                id: "Wrong Id",
                 user_id: user.id
             })
         }).rejects.toEqual(expect.objectContaining({
@@ -82,22 +84,22 @@ describe("Delete (unit)", async () => {
         }))
     })
 
-    it("should not able delete category with another user than the who created category", async () => {
+    it("should not able update form payment with another user than the who created form payment", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
             password_hash: await hash("1234567", 7),
         })
 
-        const createdCategory = await categoryRepository.create({
-            name: "Investimento",
-            transaction_type: "EXPENSE",
+        const createdFormPayment = await formPaymentRepository.create({
+            name: "Conta corrente",
             user_id: "another user"
         })
 
         expect(async () => {
-            await deleteCategoryService.handle({
-                category_id: createdCategory.id,
+            await updateFormPaymentService.handle({
+                name: "Conta corrente",
+                id: createdFormPayment.id,
                 user_id: user.id
             })
         }).rejects.toEqual(expect.objectContaining({
@@ -105,4 +107,6 @@ describe("Delete (unit)", async () => {
             body: expect.any(ResourcesNotFound)
         }))
     })
+
+   
 })

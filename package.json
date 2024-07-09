@@ -8,7 +8,7 @@
     "test:watch": "vitest test/services"
   },
   "keywords": [],
-  "a    QWSA1  0guthor": "",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "@fastify/cookie": "^9.3.1",

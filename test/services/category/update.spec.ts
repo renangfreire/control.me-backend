@@ -1,25 +1,25 @@
 
-import { CategoryRepository } from "@/core/repositories/category-repository";
+import { FormPaymentRepository } from "@/core/repositories/form-payment-repository";
 import { UsersRepository } from "@/core/repositories/user-repository";
 import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound";
-import { InMemoryCategoryRepository } from "@/repositories/in-memory/in-memory-category";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { UpdateCategoryService } from "@/services/category/update";
+import { UpdateFormPaymentService } from "@/services/formPayment/update";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 
 let userRepository: UsersRepository
-let categoryRepository: CategoryRepository
-let updateCategoryService: UpdateCategoryService
+let formPaymentRepository: FormPaymentRepository
+let updateFormPaymentService: UpdateFormPaymentService
 
-describe("Create (unit)", async () => {
+describe("Update (unit)", async () => {
     beforeEach(async () => {
         userRepository = new InMemoryUserRepository()
-        categoryRepository = new InMemoryCategoryRepository()
-        updateCategoryService = new UpdateCategoryService(userRepository, categoryRepository)
+        formPayment = new InMemoryformPayment()
+        updateCategoryService = new UpdateCategoryService(userRepository, formPayment)
     })
 
-    it("should be able update transaction category", async () => {
+    it.only("should be able update form payment", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
