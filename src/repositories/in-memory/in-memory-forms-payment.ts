@@ -38,4 +38,16 @@ export class InMemoryFormPaymentRepository implements FormPaymentRepository{
 
         return data
     }
+
+    async delete(formPayment_id: string): Promise<Boolean> {
+        const formPaymentIndex = this.#db.FormsPayment.findIndex(formPayment => formPayment.id === formPayment_id)
+
+        if(formPaymentIndex > 0){
+            this.#db.FormsPayment.splice(formPaymentIndex, 1)
+
+            return true
+        }
+
+        return false
+    }
 }
