@@ -1,40 +1,41 @@
 
-import { FormPaymentRepository } from "@/core/repositories/form-payment-repository";
+import { CategoryRepository } from "@/core/repositories/category-repository";
 import { UsersRepository } from "@/core/repositories/user-repository";
 import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound";
-import { InMemoryFormPaymentRepository } from "@/repositories/in-memory/in-memory-forms-payment";
+import { InMemoryCategoryRepository } from "@/repositories/in-memory/in-memory-category";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
-import { FormPaymentService } from "@/services/formPayment/create";
+import { CategoryService } from "@/services/category/create";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 
 let userRepository: UsersRepository
-let formPaymentRepository: FormPaymentRepository
-let formPaymentService: FormPaymentService
+let categoryRepository: CategoryRepository
+let categoryService: CategoryService
 
 describe("Create (unit)", async () => {
     beforeEach(async () => {
         userRepository = new InMemoryUserRepository()
-        formPaymentRepository = new InMemoryFormPaymentRepository()
-        formPaymentService = new FormPaymentService(userRepository, formPaymentRepository)
+        categoryRepository = new InMemoryCategoryRepository()
+        categoryService = new CategoryService(userRepository, categoryRepository)
     })
 
-    it("should be able create form payment", async () => {
+    it("should be able create transaction category", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
             password_hash: await hash("1234567", 7),
         })
 
-        const { formPayment } = await formPaymentService.handle({
-            name: "Conta corrente",
+        const { category } = await categoryService.handle({
+            name: "Investimento",
+            transaction_type: "EXPENSE",
             user_id: user.id
         })
 
-        expect(formPayment.id).toEqual(expect.any(String))
+        expect(category.id).toEqual(expect.any(String))
     })
 
-    it("should not able to create form payment with wrong user", async () => {
+    it("should not able to create transaction with wrong user", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
@@ -42,9 +43,10 @@ describe("Create (unit)", async () => {
         })
 
         expect(async () => {
-            await formPaymentService.handle({
-                name: "Conta corrente",
-                user_id: "Wrong user id"
+            await categoryService.handle({
+                name: "Investimento",
+                transaction_type: "EXPENSE",
+                user_id: "Wrong Id"
             })
         }).rejects.toEqual(expect.objectContaining({
             status: expect.any(Number),

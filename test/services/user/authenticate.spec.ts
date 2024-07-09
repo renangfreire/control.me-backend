@@ -27,8 +27,6 @@ describe("Authenticate (unit)", async () => {
             password: "1234567",
         })
 
-        console.log(user)
-
         expect(user.id).toEqual(expect.any(String))
     })
 

@@ -2,8 +2,6 @@ import { UsersRepository } from "@/core/repositories/user-repository";
 import { badRequest } from "@/main/helpers";
 import { compare } from "bcrypt";
 import { InvalidCredentials } from "@/main/errors/InvalidCredentials";
-import fastifyJwt from "@fastify/jwt";
-
 interface authenticateUserRequestSchema {
     email: string,
     password: string,
