@@ -45,13 +45,13 @@ EXTRAS after MVP:
 
 ### RNs (Regras de negócio)
 
-- [] O usuário não deve poder se cadastrar com um e-mail duplicado
+- [X] O usuário não deve poder se cadastrar com um e-mail duplicado
 - [] O usuário só pode ver suas movimentações/categorias/metricas
 
 ### RNFs (Requisitos não-funcionais)
 
-- [] A senha do usuário precisa ser criptografada;
-- [] A senha do usuário deverá ter um tamanho mínimo de 7 caracteres;
+- [X] A senha do usuário precisa ser criptografada;
+- [X] A senha do usuário deverá ter um tamanho mínimo de 7 caracteres;
 - [] Os dados da aplicação	precisam ser persistidos no PostgreSQL
 - [] Todas as listas de dados precisam estar paginadas com 20 itens por pag;
 - [] O usuário deve ser identificado por um JWT;
