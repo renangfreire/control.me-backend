@@ -15,11 +15,11 @@ type Months =
 type transactionType = "EXPENSE" | "REVENUE"
 
 export interface createTransactionRequestSchema {
-    userId: string,
+    user_id: string,
     value: number,
     transaction_at: string,
-    transactionType: transactionType
+    transaction_type: transactionType
     monthTransaction: Months
-    categoryId: string,
-    formPaymentId: string
+    category_id?: string | null,
+    formPayment_id?: string | null
 }

@@ -56,7 +56,7 @@ model Transaction {
   transaction_type TrasactionType
   value            Decimal
   created_at       DateTime       @default(now())
-  transaction_at   DateTime
+  transaction_at   DateTime?
   monthTransaction Months
 
   formPayment    formPayment? @relation(fields: [formPayment_id], references: [id])
@@ -65,8 +65,8 @@ model Transaction {
   User    User   @relation(fields: [user_id], references: [id])
   user_id String
 
-  Category    Category @relation(fields: [category_id], references: [id])
-  category_id String
+  Category    Category? @relation(fields: [category_id], references: [id])
+  category_id String?
 
   @@map("transactions")
 }
