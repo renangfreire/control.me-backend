@@ -44,9 +44,11 @@ model User {
   password_hash String
   name          String?
 
-  categories    Category[]
-  transactions  Transaction[]
+  Categories    Category[]
   type_payments formPayment[]
+
+  Expenses Expense[]
+  Revenues Revenue[]
 
   @@map("users")
 }
@@ -58,40 +60,54 @@ model Invoice {
 
   created_at DateTime @default(now())
 
-  Transaction    Transaction @relation(fields: [transaction_id], references: [id])
-  transaction_id String
+  Expense    Expense @relation(fields: [expense_id], references: [id])
+  expense_id String
 
   @@map("invoices")
 }
 
-model Transaction {
-  id               String         @id @default(uuid())
-  transaction_type TrasactionType
-  created_at       DateTime       @default(now())
-  transaction_at   DateTime?
-
-  Invoices Invoice[]
+model Expense {
+  id             String    @id @default(uuid())
+  created_at     DateTime  @default(now())
+  transaction_at DateTime?
 
   formPayment    formPayment? @relation(fields: [formPayment_id], references: [id])
   formPayment_id String?
 
+  Category    Category? @relation(fields: [category_id], references: [id])
+  category_id String?
+
+  Invoices Invoice[]
+
   User    User   @relation(fields: [user_id], references: [id])
   user_id String
+
+  @@map("expenses")
+}
+
+model Revenue {
+  id             String    @id @default(uuid())
+  created_at     DateTime  @default(now())
+  transaction_at DateTime?
+  value          Decimal
 
   Category    Category? @relation(fields: [category_id], references: [id])
   category_id String?
 
-  @@map("transactions")
+  User    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  @@map("revenues")
 }
 
 model Category {
   id               String         @id @default(uuid())
   name             String
   transaction_type TrasactionType
+  created_at       DateTime       @default(now())
 
-  transactions Transaction[]
-
-  created_at DateTime @default(now())
+  Revenues Revenue[]
+  Expenses Expense[]
 
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
@@ -108,7 +124,7 @@ model formPayment {
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
 
-  trasactions Transaction[]
+  Expenses Expense[]
 
   @@map("forms_payment")
 }
