@@ -1,32 +1,31 @@
 
 import { CategoryRepository } from "@/core/repositories/category-repository";
 import { FormPaymentRepository } from "@/core/repositories/form-payment-repository";
-import { TransactionRepository } from "@/core/repositories/transactions-repository";
+import { ExpenseRepository } from "@/core/repositories/expenses-repository";
 import { UsersRepository } from "@/core/repositories/user-repository";
 import { CategoryNotExists } from "@/main/errors/CategoryNotExists";
-import { FormPaymentNotExists } from "@/main/errors/FormPaymentNotExists";
 import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound";
 import { InMemoryCategoryRepository } from "@/repositories/in-memory/in-memory-category";
 import { InMemoryFormPaymentRepository } from "@/repositories/in-memory/in-memory-forms-payment";
-import { InMemoryTransactionRepository } from "@/repositories/in-memory/in-memory-transaction";
+import { InMemoryExpenseRepository } from "@/repositories/in-memory/in-memory-transaction";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
-import { CreateTransactionService } from "@/services/transactions/create";
+import { CreateExpenseService } from "@/services/expense/create";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 
 let userRepository: UsersRepository
 let formPaymentRepository: FormPaymentRepository
-let createTransactionService: CreateTransactionService
+let createExpenseService: CreateExpenseService
 let categoryRepository: CategoryRepository
-let transactionRepository: TransactionRepository
+let expenseRepository: ExpenseRepository
 
 describe("Create (unit)", async () => {
     beforeEach(async () => {
         userRepository = new InMemoryUserRepository()
         formPaymentRepository = new InMemoryFormPaymentRepository()
         categoryRepository = new InMemoryCategoryRepository()
-        transactionRepository = new InMemoryTransactionRepository()
-        createTransactionService = new CreateTransactionService(userRepository, categoryRepository, formPaymentRepository, transactionRepository)
+        expenseRepository = new InMemoryExpenseRepository()
+        createExpenseService = new CreateExpenseService(userRepository, categoryRepository, formPaymentRepository, expenseRepository)
     })
 
     it("should be able create transaction", async () => {
@@ -47,7 +46,7 @@ describe("Create (unit)", async () => {
             transaction_type: "EXPENSE"
         })
 
-        const { transaction, invoices } = await createTransactionService.handle({
+        const { expense, invoices } = await createExpenseService.handle({
             user_id: user.id,
             formPayment_id: formPayment.id,
             monthTransaction: "JULY",
@@ -58,7 +57,7 @@ describe("Create (unit)", async () => {
             installments: 2
         })
         
-        expect(transaction.id).toEqual(expect.any(String))
+        expect(expense.id).toEqual(expect.any(String))
         expect(invoices).toHaveLength(2)
         expect(invoices).toEqual([
             expect.objectContaining({
@@ -84,7 +83,7 @@ describe("Create (unit)", async () => {
         })
 
         expect(async () => {
-            await createTransactionService.handle({
+            await createExpenseService.handle({
                 user_id: user.id,
                 monthTransaction: "JULY",
                 value: 500,
@@ -107,7 +106,7 @@ describe("Create (unit)", async () => {
         })
 
         expect(async () => {
-            await createTransactionService.handle({
+            await createExpenseService.handle({
                 user_id: "Wrong user",
                 monthTransaction: "JULY",
                 value: 500,

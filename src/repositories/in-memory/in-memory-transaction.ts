@@ -1,24 +1,23 @@
-import { TransactionRepository } from "@/core/repositories/transactions-repository";
-import { prisma } from "@/main/config/prisma";
-import { Invoice, Prisma, Transaction } from "@prisma/client";
+import { ExpenseRepository } from "@/core/repositories/expenses-repository";
+import { Expense, Invoice, Prisma } from "@prisma/client";
 import { randomUUID } from "crypto";
 
 interface inMemoryDataBase {
-    Transactions: Transaction[],
+    Expenses: Expense[],
     Invoices: Invoice[]
 }
 
-export class InMemoryTransactionRepository implements TransactionRepository{
+export class InMemoryExpenseRepository implements ExpenseRepository{
     private db: inMemoryDataBase = {
-        Transactions: [],
+        Expenses: [],
         Invoices: []
     }
 
-    async create(data: Prisma.TransactionUncheckedCreateInput) {
-        const invoiceData = data.Invoices?.createMany?.data
-        const arrInvoices = Array.isArray(invoiceData) ? invoiceData : (invoiceData && [invoiceData])
+    async create(data: Prisma.ExpenseUncheckedCreateInput) {
+        const invoiceData = data.Invoices?.createMany?.data || []
+        const arrInvoices = Array.isArray(invoiceData) ? invoiceData : [invoiceData]
 
-        const transaction = {
+        const expense = {
             ...data,
             id: randomUUID(),
             created_at: new Date(),
@@ -28,25 +27,23 @@ export class InMemoryTransactionRepository implements TransactionRepository{
             category_id: data.category_id || null,
         }
 
-        const invoices = arrInvoices?.map((data) => {
+        const invoices = arrInvoices.map((data) => {
             return {
                 ...data,
                 id: randomUUID(),
                 created_at: new Date(),
                 value: new Prisma.Decimal(data && Number(data.value)),
-                transaction_id: transaction.id,
+                expense_id: expense.id,
             }
         })
 
-        if(invoices){
-            this.db.Invoices = [...this.db.Invoices, ...invoices]
-        }
+        this.db.Invoices = [...this.db.Invoices, ...invoices]
 
-        this.db.Transactions.push(transaction)
+        this.db.Expenses.push(expense)
 
         return {
-            transaction: transaction,
-            invoices: this.db.Invoices
+            expense,
+            invoices: invoices
         }
     }
 }

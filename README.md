@@ -28,8 +28,9 @@ O Control.me é um projeto que tem como finalidade ser um controle de financias 
 
 - [X] Deve ser possível se cadastrar;
 - [X] Deve ser possível se autenticar;
-- [] Deve ser possível realizar um CRUD em uma Entrada/Saída de dinheiro
-- [] Deve ser possível realizar um CRUD em uma compra parcelada que será adicionada fracionada
+- [] Deve ser possível realizar um Transação de uma Entrada de dinheiro
+- [X] Deve ser possível criar uma Transação de Saída de dinheiro
+- [X] Deve ser possível criar uma transação de uma compra parcelada que será adicionada fracionada
 - [X] Deve ser possível realizar um CRUD em categorias de compra (saídas)
 - [X] Deve ser possível realizar um CRUD em categorias de recebimento de money (entradas)
 - [X] Deve ser possível realizar um CRUD em formas de pagamento diferente e que será vinculada a saída

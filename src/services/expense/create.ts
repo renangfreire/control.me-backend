@@ -5,11 +5,11 @@ import { badRequest } from "@/main/helpers";
 import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound";
 import { CategoryNotExists } from "@/main/errors/CategoryNotExists";
 import { FormPaymentNotExists } from "@/main/errors/FormPaymentNotExists";
-import { TransactionRepository } from "@/core/repositories/transactions-repository";
+import { ExpenseRepository } from "@/core/repositories/expenses-repository";
 
 import { $Enums, Invoice, Prisma } from "@prisma/client"
 import dayjs from "dayjs";
-export interface createTransactionRequestSchema {
+export interface createExpenseRequestSchema {
     user_id: string,
     value: number,
     transaction_at: string,
@@ -25,15 +25,15 @@ interface invoice {
     monthTransaction: $Enums.Months
 }
 
-export class CreateTransactionService{
+export class CreateExpenseService{
     constructor(
         private userRepository: UsersRepository,
         private categoryRepository: CategoryRepository,
         private formPaymentRepository: FormPaymentRepository,
-        private transactionRepository: TransactionRepository
+        private expenseRepository: ExpenseRepository
     ){}
 
-    async handle({category_id, formPayment_id, monthTransaction, transaction_type, transaction_at, user_id, value, installments}: createTransactionRequestSchema){
+    async handle({category_id, formPayment_id, monthTransaction, transaction_type, transaction_at, user_id, value, installments}: createExpenseRequestSchema){
         const user = await this.userRepository.findById(user_id)
 
         if(!user){
@@ -72,8 +72,7 @@ export class CreateTransactionService{
             dataInvoices.push(invoice)
         }
 
-        const { transaction, invoices } = await this.transactionRepository.create({
-            transaction_type,
+        const { expense, invoices } = await this.expenseRepository.create({
             user_id,
             category_id,
             formPayment_id,
@@ -86,7 +85,7 @@ export class CreateTransactionService{
         })
 
         return {
-            transaction,
+            expense,
             invoices
         }
     }
