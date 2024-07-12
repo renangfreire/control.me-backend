@@ -47,17 +47,27 @@ describe("Create (unit)", async () => {
             transaction_type: "EXPENSE"
         })
 
-        const { transaction } = await createTransactionService.handle({
+        const { transaction, invoices } = await createTransactionService.handle({
             user_id: user.id,
             formPayment_id: formPayment.id,
             monthTransaction: "JULY",
             value: 500,
             category_id: category.id,
             transaction_type: "EXPENSE",
-            transaction_at: new Date().toString()
+            transaction_at: new Date().toString(),
+            installments: 2
         })
         
         expect(transaction.id).toEqual(expect.any(String))
+        expect(invoices).toHaveLength(2)
+        expect(invoices).toEqual([
+            expect.objectContaining({
+                monthTransaction: "JULY"
+            }),
+            expect.objectContaining({
+                monthTransaction: "AUGUST"
+            })
+        ])
     })
 
     it("should not able to create a transaction with wrong category", async () => {
@@ -80,7 +90,8 @@ describe("Create (unit)", async () => {
                 value: 500,
                 category_id: "wrong category ID",
                 transaction_type: "EXPENSE",
-                transaction_at: new Date().toString()
+                transaction_at: new Date().toString(),
+                installments: 1
             })
         }).rejects.toEqual(expect.objectContaining({
             status: expect.any(Number),
@@ -101,7 +112,8 @@ describe("Create (unit)", async () => {
                 monthTransaction: "JULY",
                 value: 500,
                 transaction_type: "EXPENSE",
-                transaction_at: new Date().toString()
+                transaction_at: new Date().toString(),
+                installments: 1
             })
         }).rejects.toEqual(expect.objectContaining({
             status: expect.any(Number),

@@ -51,13 +51,26 @@ model User {
   @@map("users")
 }
 
+model Invoice {
+  id               String  @id @default(uuid())
+  value            Decimal
+  monthTransaction Months
+
+  created_at DateTime @default(now())
+
+  Transaction    Transaction @relation(fields: [transaction_id], references: [id])
+  transaction_id String
+
+  @@map("invoices")
+}
+
 model Transaction {
   id               String         @id @default(uuid())
   transaction_type TrasactionType
-  value            Decimal
   created_at       DateTime       @default(now())
   transaction_at   DateTime?
-  monthTransaction Months
+
+  Invoices Invoice[]
 
   formPayment    formPayment? @relation(fields: [formPayment_id], references: [id])
   formPayment_id String?
