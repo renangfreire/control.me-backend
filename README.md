@@ -28,8 +28,10 @@ O Control.me é um projeto que tem como finalidade ser um controle de financias 
 
 - [X] Deve ser possível se cadastrar;
 - [X] Deve ser possível se autenticar;
-- [] Deve ser possível realizar um Transação de uma Entrada de dinheiro
+- [X] Deve ser possível realizar um Transação de uma Entrada de dinheiro
+  - [] Deve ser possível realizar um CRUD de uma Entrada de dinheiro
 - [X] Deve ser possível criar uma Transação de Saída de dinheiro
+  - [] Deve ser possível criar uma CRUD de Saída de dinheiro
 - [X] Deve ser possível criar uma transação de uma compra parcelada que será adicionada fracionada
 - [X] Deve ser possível realizar um CRUD em categorias de compra (saídas)
 - [X] Deve ser possível realizar um CRUD em categorias de recebimento de money (entradas)
@@ -54,7 +56,7 @@ EXTRAS after MVP:
 
 - [X] A senha do usuário precisa ser criptografada;
 - [X] A senha do usuário deverá ter um tamanho mínimo de 7 caracteres;
-- [] Os dados da aplicação	precisam ser persistidos no PostgreSQL
+- [X] Os dados da aplicação	precisam ser persistidos no PostgreSQL
 - [] Todas as listas de dados precisam estar paginadas com 20 itens por pag;
 - [] O usuário deve ser identificado por um JWT;
 
