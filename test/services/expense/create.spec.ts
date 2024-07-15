@@ -12,6 +12,7 @@ import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-
 import { CreateExpenseService } from "@/services/expense/create";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
+import { FormPaymentNotExists } from "@/main/errors/FormPaymentNotExists";
 
 let userRepository: UsersRepository
 let formPaymentRepository: FormPaymentRepository
@@ -28,7 +29,7 @@ describe("Create (unit)", async () => {
         createExpenseService = new CreateExpenseService(userRepository, categoryRepository, formPaymentRepository, expenseRepository)
     })
 
-    it("should be able create transaction", async () => {
+    it("should be able create an expense", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
@@ -69,7 +70,35 @@ describe("Create (unit)", async () => {
         ])
     })
 
-    it("should not able to create a transaction with wrong category", async () => {
+    it("should not able to create an expense with wrong form payment", async () => {
+        const user = await userRepository.create({
+            name: "John Doe",
+            email: "johndoe@example.com",
+            password_hash: await hash("1234567", 7),
+        })
+
+        const formPayment = await formPaymentRepository.create({
+            user_id: user.id,
+            name: "Conta corrente",
+        })
+
+        expect(async () => {
+            await createExpenseService.handle({
+                user_id: user.id,
+                monthTransaction: "JULY",
+                value: 500,
+                formPayment_id: "Wrong formPayment ID",
+                transaction_type: "EXPENSE",
+                transaction_at: new Date().toString(),
+                installments: 1
+            })
+        }).rejects.toEqual(expect.objectContaining({
+            status: expect.any(Number),
+            body: expect.any(FormPaymentNotExists)
+        }))
+    })
+
+    it("should not able to create an expense with wrong category", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
@@ -98,7 +127,7 @@ describe("Create (unit)", async () => {
         }))
     })
 
-    it("should not able to create a transaction with wrong user", async () => {
+    it("should not able to create an expense with wrong user", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
