@@ -86,10 +86,11 @@ model Expense {
 }
 
 model Revenue {
-  id             String    @id @default(uuid())
-  created_at     DateTime  @default(now())
-  transaction_at DateTime?
-  value          Decimal
+  id               String    @id @default(uuid())
+  created_at       DateTime  @default(now())
+  transaction_at   DateTime?
+  value            Decimal
+  monthTransaction Months
 
   Category    Category? @relation(fields: [category_id], references: [id])
   category_id String?
