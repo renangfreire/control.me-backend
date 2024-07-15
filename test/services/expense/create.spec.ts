@@ -7,7 +7,7 @@ import { CategoryNotExists } from "@/main/errors/CategoryNotExists";
 import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound";
 import { InMemoryCategoryRepository } from "@/repositories/in-memory/in-memory-category";
 import { InMemoryFormPaymentRepository } from "@/repositories/in-memory/in-memory-forms-payment";
-import { InMemoryExpenseRepository } from "@/repositories/in-memory/in-memory-transaction";
+import { InMemoryExpenseRepository } from "@/repositories/in-memory/in-memory-expense";
 import { InMemoryUserRepository } from "@/repositories/in-memory/in-memory-user-repository";
 import { CreateExpenseService } from "@/services/expense/create";
 import { hash } from "bcrypt";
