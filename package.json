@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "tsx watch src/main/server.ts",
-    "test:watch": "vitest test/services"
+    "test:watch": "vitest test/services",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "@mermaid-js/mermaid-cli": "^10.9.1",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.14.10",
+    "@vitest/coverage-v8": "^1.6.0",
     "prisma": "^5.16.1",
     "prisma-erd-generator": "^1.11.2",
     "tsup": "^8.1.0",
