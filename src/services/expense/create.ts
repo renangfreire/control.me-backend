@@ -13,7 +13,6 @@ export interface createExpenseRequestSchema {
     user_id: string,
     value: number,
     transaction_at: string,
-    transaction_type: $Enums.TrasactionType
     monthTransaction: $Enums.Months
     category_id?: string | null,
     formPayment_id?: string | null
@@ -33,7 +32,7 @@ export class CreateExpenseService{
         private expenseRepository: ExpenseRepository
     ){}
 
-    async handle({category_id, formPayment_id, monthTransaction, transaction_type, transaction_at, user_id, value, installments}: createExpenseRequestSchema){
+    async handle({category_id, formPayment_id, monthTransaction, transaction_at, user_id, value, installments}: createExpenseRequestSchema){
         const user = await this.userRepository.findById(user_id)
 
         if(!user){

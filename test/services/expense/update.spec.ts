@@ -13,12 +13,16 @@ import { CreateExpenseService } from "@/services/expense/create";
 import { hash } from "bcrypt";
 import { beforeEach, describe, expect, it } from "vitest";
 import { FormPaymentNotExists } from "@/main/errors/FormPaymentNotExists";
+import { UpdateExpenseService } from "@/services/expense/update";
+import { InMemoryInvoiceRepository } from "@/repositories/in-memory/in-memory-invoice";
+import { InvoiceRepository } from "@/core/repositories/invoice-repository";
 
 let userRepository: UsersRepository
 let formPaymentRepository: FormPaymentRepository
-let createExpenseService: CreateExpenseService
+let updateExpenseService: UpdateExpenseService
 let categoryRepository: CategoryRepository
 let expenseRepository: ExpenseRepository
+let invoiceRepository: InvoiceRepository
 
 describe("Create (unit)", async () => {
     beforeEach(async () => {
@@ -26,7 +30,8 @@ describe("Create (unit)", async () => {
         formPaymentRepository = new InMemoryFormPaymentRepository()
         categoryRepository = new InMemoryCategoryRepository()
         expenseRepository = new InMemoryExpenseRepository()
-        createExpenseService = new CreateExpenseService(userRepository, categoryRepository, formPaymentRepository, expenseRepository)
+        invoiceRepository = new InMemoryInvoiceRepository()
+        updateExpenseService = new UpdateExpenseService(userRepository, categoryRepository, formPaymentRepository, expenseRepository, invoiceRepository)
     })
 
     it("should be able create an expense", async () => {
@@ -47,24 +52,43 @@ describe("Create (unit)", async () => {
             transaction_type: "EXPENSE"
         })
 
-        const { expense, invoices } = await createExpenseService.handle({
+        const {expense: expenseCreated, invoices: invoicesCreated} = await expenseRepository.create({
             user_id: user.id,
             formPayment_id: formPayment.id,
-            monthTransaction: "JULY",
-            value: 500,
+            category_id: category.id,
+            transaction_at: new Date().toString(),
+            Invoices: {
+                 createMany: {
+                    data: [
+                        {
+                            monthTransaction: "JULY",
+                            value: 500,
+                            created_at: new Date()
+                        }
+                    ]
+                 }
+            }
+        })
+
+        const { expense, invoices} = await updateExpenseService.handle({
+            id: expenseCreated.id,
+            user_id: user.id,
+            formPayment_id: formPayment.id,
+            monthTransaction: "AUGUST",
+            value: 400,
             category_id: category.id,
             transaction_at: new Date().toString(),
             installments: 2
         })
         
-        expect(expense.id).toEqual(expect.any(String))
+        expect(expense?.id).toEqual(expenseCreated.id)
         expect(invoices).toHaveLength(2)
         expect(invoices).toEqual([
             expect.objectContaining({
-                monthTransaction: "JULY"
+                monthTransaction: "AUGUST"
             }),
             expect.objectContaining({
-                monthTransaction: "AUGUST"
+                monthTransaction: "SEPTEMBER"
             })
         ])
     })
@@ -81,8 +105,33 @@ describe("Create (unit)", async () => {
             name: "Conta corrente",
         })
 
+        const category = await categoryRepository.create({
+            user_id: user.id,
+            name: "Investimento",
+            transaction_type: "EXPENSE"
+        })
+
+        const {expense: expenseCreated, invoices: invoicesCreated} = await expenseRepository.create({
+            user_id: user.id,
+            formPayment_id: formPayment.id,
+            category_id: category.id,
+            transaction_at: new Date().toString(),
+            Invoices: {
+                 createMany: {
+                    data: [
+                        {
+                            monthTransaction: "JULY",
+                            value: 500,
+                            created_at: new Date()
+                        }
+                    ]
+                 }
+            }
+        })
+
         expect(async () => {
-            await createExpenseService.handle({
+            await updateExpenseService.handle({
+                id: expenseCreated.id,
                 user_id: user.id,
                 monthTransaction: "JULY",
                 value: 500,
@@ -103,18 +152,43 @@ describe("Create (unit)", async () => {
             password_hash: await hash("1234567", 7),
         })
 
+        const formPayment = await formPaymentRepository.create({
+            user_id: user.id,
+            name: "Conta corrente",
+        })
+
         const category = await categoryRepository.create({
             user_id: user.id,
             name: "Investimento",
             transaction_type: "EXPENSE"
         })
 
+        const {expense: expenseCreated, invoices: invoicesCreated} = await expenseRepository.create({
+            user_id: user.id,
+            formPayment_id: formPayment.id,
+            category_id: category.id,
+            transaction_at: new Date().toString(),
+            Invoices: {
+                 createMany: {
+                    data: [
+                        {
+                            monthTransaction: "JULY",
+                            value: 500,
+                            created_at: new Date()
+                        }
+                    ]
+                 }
+            }
+        })
+
         expect(async () => {
-            await createExpenseService.handle({
+            await updateExpenseService.handle({
+                id: expenseCreated.id,
                 user_id: user.id,
                 monthTransaction: "JULY",
                 value: 500,
                 category_id: "wrong category ID",
+                transaction_type: "EXPENSE",
                 transaction_at: new Date().toString(),
                 installments: 1
             })
@@ -131,11 +205,42 @@ describe("Create (unit)", async () => {
             password_hash: await hash("1234567", 7),
         })
 
+        const formPayment = await formPaymentRepository.create({
+            user_id: user.id,
+            name: "Conta corrente",
+        })
+
+        const category = await categoryRepository.create({
+            user_id: user.id,
+            name: "Investimento",
+            transaction_type: "EXPENSE"
+        })
+
+        const {expense: expenseCreated, invoices: invoicesCreated} = await expenseRepository.create({
+            user_id: user.id,
+            formPayment_id: formPayment.id,
+            category_id: category.id,
+            transaction_at: new Date().toString(),
+            Invoices: {
+                 createMany: {
+                    data: [
+                        {
+                            monthTransaction: "JULY",
+                            value: 500,
+                            created_at: new Date()
+                        }
+                    ]
+                 }
+            }
+        })
+
         expect(async () => {
-            await createExpenseService.handle({
+            await updateExpenseService.handle({
+                id: expenseCreated.id,
                 user_id: "Wrong user",
                 monthTransaction: "JULY",
                 value: 500,
+                transaction_type: "EXPENSE",
                 transaction_at: new Date().toString(),
                 installments: 1
             })
