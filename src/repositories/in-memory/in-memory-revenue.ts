@@ -1,4 +1,5 @@
 import { RevenueRepository } from "@/core/repositories/revenue-repository";
+import { prisma } from "@/main/config/prisma";
 import { Prisma, Revenue } from "@prisma/client";
 import { randomUUID } from "crypto";
 
@@ -41,6 +42,14 @@ export class InMemoryRevenueRepository implements RevenueRepository{
 
             this.db.Revenue.push(data)
         }
+
+        return data
+    }
+
+    async delete(id: String): Promise<Revenue> {
+        const revenueIndex = this.db.Revenue.findIndex(value => value.id === id)
+
+        const [ data ] = this.db.Revenue.splice(revenueIndex, 1)
 
         return data
     }
