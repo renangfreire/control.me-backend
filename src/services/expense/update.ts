@@ -53,6 +53,12 @@ export class UpdateExpenseService{
             throw badRequest(new ResourcesNotFound())
         }
 
+        const isNotSameUserWhoCreated = expense.user_id !== user_id
+
+        if(isNotSameUserWhoCreated){
+            throw badRequest(new ResourcesNotFound())
+        }
+
         if(category_id){
             const category = await this.categoryRepository.findById(category_id)
 

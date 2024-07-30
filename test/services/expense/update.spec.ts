@@ -249,4 +249,62 @@ describe("Create (unit)", async () => {
             body: expect.any(ResourcesNotFound)
         }))
     })
+
+    it("should not able to create an expense with another user who created", async () => {
+        const user = await userRepository.create({
+            name: "John Doe",
+            email: "johndoe@example.com",
+            password_hash: await hash("1234567", 7),
+        })
+
+        const anotherUser = await userRepository.create({
+            name: "Another Doe",
+            email: "anotherdoe@example.com",
+            password_hash: await hash("1234567", 7),
+        })
+
+        const formPayment = await formPaymentRepository.create({
+            user_id: user.id,
+            name: "Conta corrente",
+        })
+
+        const category = await categoryRepository.create({
+            user_id: user.id,
+            name: "Investimento",
+            transaction_type: "EXPENSE"
+        })
+
+        const {expense: expenseCreated, invoices: invoicesCreated} = await expenseRepository.create({
+            user_id: user.id,
+            formPayment_id: formPayment.id,
+            category_id: category.id,
+            transaction_at: new Date().toString(),
+            Invoices: {
+                 createMany: {
+                    data: [
+                        {
+                            monthTransaction: "JULY",
+                            value: 500,
+                            created_at: new Date()
+                        }
+                    ]
+                 }
+            }
+        })
+
+        expect(async () => {
+            await updateExpenseService.handle({
+                id: expenseCreated.id,
+                user_id: anotherUser.id,
+                monthTransaction: "JULY",
+                value: 500,
+                transaction_type: "EXPENSE",
+                transaction_at: new Date().toString(),
+                installments: 1
+            })
+        }).rejects.toEqual(expect.objectContaining({
+            status: expect.any(Number),
+            body: expect.any(ResourcesNotFound)
+        }))
+    })
 })

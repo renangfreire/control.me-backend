@@ -59,7 +59,7 @@ describe("Update (unit)", async () => {
         expect(updatedRevenue.value.toNumber()).toEqual(800)
     })
 
-    it("should not able to create an revenue with wrong category", async () => {
+    it("should not able to update an revenue with wrong category", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
@@ -95,7 +95,41 @@ describe("Update (unit)", async () => {
         }))
     })
 
-    it("should not able to create an revenue with wrong user", async () => {
+    it("should not able to update an revenue with another user who created", async () => {
+        const user = await userRepository.create({
+            name: "John Doe",
+            email: "johndoe@example.com",
+            password_hash: await hash("1234567", 7),
+        })
+
+        const anotherUser = await userRepository.create({
+            name: "Another Doe",
+            email: "anotherDoe@example.com",
+            password_hash: await hash("1234567", 7),
+        })
+
+        const revenue = await revenueRepository.create({
+            user_id: user.id,
+            monthTransaction: "JULY",
+            value: 500,
+            transaction_at: new Date().toString(),
+        })
+
+        expect(async () => {
+            await updateRevenueService.handle({
+                id: revenue.id,
+                user_id: anotherUser.id,
+                monthTransaction: "JULY",
+                value: 500,
+                transaction_at: new Date().toString(),
+            })
+        }).rejects.toEqual(expect.objectContaining({
+            status: expect.any(Number),
+            body: expect.any(ResourcesNotFound)
+        }))
+    })
+
+    it("should not able to update an revenue with wrong user", async () => {
         const user = await userRepository.create({
             name: "John Doe",
             email: "johndoe@example.com",
