@@ -26,4 +26,22 @@ export class InMemoryRevenueRepository implements RevenueRepository{
 
         return revenue
     }
+
+    async findById(id: String): Promise<Revenue | null> {
+        const revenue = this.db.Revenue.find(value => value.id === id)
+
+        return revenue || null
+    }
+
+    async update(data: Revenue): Promise<Revenue> {
+        const revenueIndex = this.db.Revenue.findIndex(value => value.id === data.id)
+
+        if(revenueIndex){
+            this.db.Revenue.splice(revenueIndex, 1)
+
+            this.db.Revenue.push(data)
+        }
+
+        return data
+    }
 }

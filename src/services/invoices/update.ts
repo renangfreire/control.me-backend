@@ -5,27 +5,22 @@ import { ResourcesNotFound } from "@/main/errors/ResourcesNotFound"
 import { badRequest } from "@/main/helpers"
 import { $Enums } from "@prisma/client"
 
-interface updateIncomeRequestSchema {
+interface updateInvoiceRequestSchema {
     id: string,
     user_id: string,
     value?: number,
-    transaction_at?: string,
-    transaction_type?: $Enums.TrasactionType
     monthTransaction?: $Enums.Months
-    category_id?: string | null,
-    formPayment_id?: string | null
-    installments?: number
 }
 
 
-export class updateIncomeService{
+export class updateInvoiceService{
     constructor(
         private userRepository: UsersRepository,
         private expenseRepository: ExpenseRepository,
         private invoiceRepository: InvoiceRepository
     ){}
 
-    async handle(data: updateIncomeRequestSchema){
+    async handle(data: updateInvoiceRequestSchema){
         const [user, expense] =  await Promise.all([
             this.userRepository.findById(data.user_id),
             this.expenseRepository.findById(data.id)
