@@ -4,4 +4,5 @@ export class RevenueRepository{
     async update(data: Revenue) : Promise<Revenue>
     async findById(id: String): Promise<Revenue | null>
     async delete(id: String): Promise<Revenue>
+    async fetchByUserIdWithPage(page: number, user_id: string): Promise<Revenue[]>
 }

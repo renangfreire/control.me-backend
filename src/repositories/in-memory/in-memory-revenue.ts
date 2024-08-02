@@ -1,7 +1,9 @@
 import { RevenueRepository } from "@/core/repositories/revenue-repository";
+import { env } from "@/main/config/env";
 import { prisma } from "@/main/config/prisma";
 import { Prisma, Revenue } from "@prisma/client";
 import { randomUUID } from "crypto";
+import { z } from "zod";
 
 interface inMemoryDataBase {
     Revenue: Revenue[]
@@ -52,5 +54,12 @@ export class InMemoryRevenueRepository implements RevenueRepository{
         const [ data ] = this.db.Revenue.splice(revenueIndex, 1)
 
         return data
+    }
+
+    async fetchByUserIdWithPage(page: number, user_id: string): Promise<Revenue[]> {
+        const firstIndexPage = (page-1) * 20
+        const revenues = this.db.Revenue.filter((value) => value.user_id === user_id).splice(firstIndexPage, 20)
+
+        return revenues
     }
 }

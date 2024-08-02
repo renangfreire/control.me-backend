@@ -22,14 +22,14 @@ Esse projeto está sendo desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 
-O Control.me é um projeto que tem como finalidade ser um controle de financias pessoais para usuário. Segue abaixo os Requesitos que a aplicação deve cumprir.
+O My.Financials é um projeto que tem como finalidade ser um controle de financias pessoais para usuário. Segue abaixo os Requesitos que a aplicação deve cumprir.
 
 ### RFs (Requisitos funcionais)
 
 - [X] Deve ser possível se cadastrar;
 - [X] Deve ser possível se autenticar;
 - [X] Deve ser possível realizar um Transação de uma Entrada de dinheiro
-  - [] Deve ser possível realizar um CRUD de uma Entrada de dinheiro
+  - [X] Deve ser possível realizar um CRUD de uma Entrada de dinheiro
 - [X] Deve ser possível criar uma Transação de Saída de dinheiro
   - [] Deve ser possível criar uma CRUD de Saída de dinheiro
 - [X] Deve ser possível criar uma transação de uma compra parcelada que será adicionada fracionada
